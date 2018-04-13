@@ -12,7 +12,7 @@
 #include "TH1.h"
 using namespace std;
 
-void TimingAndRates(float time, std::string filename,int run=1,std::string outname="HLT_Paths_TimingAndRates.csv",std::string process="HLTX"){
+void TimingAndRates(float time, std::string filename,int run=1,std::string outname="HLT_Paths_Timing.csv",std::string process="TIMING"){
  
   std::cout<<"starting program"<<std::endl;
   std::vector<string> vNames;

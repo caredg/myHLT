@@ -11,7 +11,7 @@
 ###########################################################################
 
 """
-   usage: %prog <file1> <file2> <run> <HLTpathname>
+   usage: %prog <file1> <file2> <run1> <run2> <HLTpathname>
 """   
 
 import os,sys
@@ -163,7 +163,7 @@ def main():
 ###############################################################
     #check the number of parameter
     numarg = len(sys.argv)
-    if numarg < 5:
+    if numarg < 6:
         usage()
         return 1
 

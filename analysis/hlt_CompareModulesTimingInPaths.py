@@ -94,7 +94,7 @@ def print_csv_file(repo1,repo2,file1,file2,path):
     #print fname2
     
     #create csv file
-    csv_file_title = "PathModulesTimingComparison_"+path+"_"+fname1+"_Vs_"+fname2+".csv"
+    csv_file_title = "PathModulesTimingComparisonInPaths_"+path+"_"+fname1+"_Vs_"+fname2+".csv"
     theTitle = unicode(csv_file_title)
     #print theTitle
     f = io.open(theTitle,'w',encoding='utf8')

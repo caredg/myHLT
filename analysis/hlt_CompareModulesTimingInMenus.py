@@ -145,14 +145,14 @@ def print_csv_file(repo1,repo2,file1,file2):
 
     #print first elements in the ordered tuples
     maxitems = 10
-    off_label = "Most Offending Modules - "+fname1+" Menu : ('Module', Timing (ms))"
+    off_label = "Most Offending Modules - "+fname1+" : ('Module', Timing (ms))"
     print_tuples(sorted_mostOffending,off_label,maxitems)
 #    print sorted_mostOffending
-    inc_label = "\nMost Absolute Increasing Modules - "+fname1+" Menu with respect to "+fname2+" Menu: ('Module', Increased Timing (ms))"
+    inc_label = "\nMost Increasing Modules - "+fname1+" with respect to "+fname2+": ('Module', Increased Timing (ms))"
     print_tuples(sorted_mostIncreasing,inc_label,maxitems)
-    dec_label = "\nMost Absolute Decreasing Modules - "+fname1+" Menu with respect to "+fname2+" Menu: ('Module', Decreased Timing (ms))"
+    dec_label = "\nMost Decreasing Modules - "+fname1+" with respect to "+fname2+": ('Module', Decreased Timing (ms))"
     print_tuples(sorted_mostDecreasing,dec_label,maxitems)
-    rel_label = "\nMost Absolute Relative Change in Timing - "+fname1+" Menu with respect to "+fname2+" Menu: ('Module', Absolute Relative Change)"
+    rel_label = "\nMost Absolute Relative Change in Timing - "+fname1+" with respect to "+fname2+": ('Module', Absolute Relative Change)"
     print_tuples(sorted_mostRelChange,rel_label,maxitems)
 
 ###############################################################

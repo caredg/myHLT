@@ -88,8 +88,8 @@ def print_csv_file(repo1,repo2,file1,file2,path):
 
     #compare based on first container, which
     #should have paths in the newest menu
-    fname1 = file1.split("_")[1].rstrip(".csv")
-    fname2 = file2.split("_")[1].rstrip(".csv")
+    fname1 = file1.split("_")[1].strip("Menu-")
+    fname2 = file2.split("_")[1].strip("Menu-")
     #print fname1
     #print fname2
     

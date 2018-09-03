@@ -109,7 +109,11 @@ if useBRILCALC:
    import commands
    hltPATH='HLT_ZeroBias_v*'
 #   BRILCALC_COMMAND="brilcalc lumi --byls -i "+ input_json + " -b 'STABLE BEAMS' --without-checkjson -u 1e30/cm2s --normtag hfoc17v1 --type HFOC -r 304119"
-   BRILCALC_COMMAND="brilcalc lumi --byls -i "+ input_json + " -b 'STABLE BEAMS' --without-checkjson -u 1e30/cm2s --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_BRIL.json -r 302674"
+#   BRILCALC_COMMAND="brilcalc lumi --byls -i "+ input_json + " -b 'STABLE BEAMS' --without-checkjson -u 1e30/cm2s --normtag /cvmfs/cms-bril.cern.ch/cms-lumi-pog/Normtags/normtag_BRIL.json -r 302674"
+#   BRILCALC_COMMAND="brilcalc lumi --byls -i "+ input_json + " -b 'STABLE BEAMS' --without-checkjson -u 1e30/cm2s -r 316457"
+#   BRILCALC_COMMAND="brilcalc lumi --byls -i "+ input_json + " -b 'STABLE BEAMS' --without-checkjson -u 1e30/cm2s --type HFET -r 319941"
+   BRILCALC_COMMAND="brilcalc lumi --byls -i "+ input_json + " -b 'STABLE BEAMS' -u 1e30/cm2s --type HFET -r 321755"
+
 
 #   print BRILCALC_COMMAND
    out = commands.getstatusoutput(BRILCALC_COMMAND)
@@ -144,7 +148,8 @@ if useBRILCALC:
             if len(i) == 0: continue
             if str(i) == '|': continue
 #            if str(i) == 'HFOC': continue
-            if str(i) == 'PLTZERO': continue
+#            if str(i) == 'PLTZERO': continue
+            if str(i) == 'HFET': continue
             else:
                pu = i
 #         print pu

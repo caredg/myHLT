@@ -66,13 +66,15 @@ def get_modules_timing(infile,run):
     return theDict
 
 #######################################################
-def print_tuples(sDic,label,max):
+def print_tuples(sDic,label,max,thefile):
 #######################################################
     print label
+    thefile.write(label+"\n")
     n = 0
     for p in sDic:
         if (n < max):
             print p
+            thefile.write(str(p)+"\n")
         else:
             break
         n = n + 1
@@ -80,7 +82,7 @@ def print_tuples(sDic,label,max):
 
 
 #######################################################
-def print_csv_file(repo1,repo2,file1,file2):
+def print_csv_and_txt_files(repo1,repo2,file1,file2):
 #######################################################
 
     #compare based on first container, which
@@ -92,10 +94,14 @@ def print_csv_file(repo1,repo2,file1,file2):
     
     #create csv file
     csv_file_title = "PathModulesTimingComparisonInMenus_"+fname1+"_Vs_"+fname2+".csv"
+    txt_file_title = "PathModulesTimingComparisonInMenus_"+fname1+"_Vs_"+fname2+".txt"
     theTitle = unicode(csv_file_title)
+    os.system("rm -f "+csv_file_title)
+    os.system("rm -f "+txt_file_title)
     #print theTitle
     f = io.open(theTitle,'w',encoding='utf8')
-
+    #no need to encode the txt file
+    ftxt = open(txt_file_title,'w')
     #to keep track of most offending modules and largest differences
     #with respect to the other menu
     mostOffending = {}
@@ -145,15 +151,15 @@ def print_csv_file(repo1,repo2,file1,file2):
 
     #print first elements in the ordered tuples
     maxitems = 10
-    off_label = "Most Offending Modules - "+fname1+" : ('Module', Timing (ms))"
-    print_tuples(sorted_mostOffending,off_label,maxitems)
+    off_label = "Most time-consuming modules ["+fname1+" Menu]\n('Module', timing (ms))"
+    print_tuples(sorted_mostOffending,off_label,maxitems,ftxt)
 #    print sorted_mostOffending
-    inc_label = "\nMost Increasing Modules - "+fname1+" with respect to "+fname2+": ('Module', Increased Timing (ms))"
-    print_tuples(sorted_mostIncreasing,inc_label,maxitems)
-    dec_label = "\nMost Decreasing Modules - "+fname1+" with respect to "+fname2+": ('Module', Decreased Timing (ms))"
-    print_tuples(sorted_mostDecreasing,dec_label,maxitems)
-    rel_label = "\nMost Absolute Relative Change in Timing - "+fname1+" with respect to "+fname2+": ('Module', Absolute Relative Change)"
-    print_tuples(sorted_mostRelChange,rel_label,maxitems)
+    inc_label = "\nModules with the most timing increment ["+fname1+" Menu - "+fname2+" Menu]\n('Module', increment in timing (ms))"
+    print_tuples(sorted_mostIncreasing,inc_label,maxitems,ftxt)
+    dec_label = "\nModules with the most timing decrement ["+fname1+" Menu - "+fname2+" Menu]\n('Module', decrement in timing (ms))"
+    print_tuples(sorted_mostDecreasing,dec_label,maxitems,ftxt)
+    rel_label = "\nModules with the most relative change in timing [ABS("+fname1+" Menu - "+fname2+" Menu)/"+fname2+" Menu]\n('Module', absolute relative change)"
+    print_tuples(sorted_mostRelChange,rel_label,maxitems,ftxt)
 
 ###############################################################
 def main():
@@ -186,7 +192,7 @@ def main():
     repo2 = get_modules_timing(infile2,run2)
 
     #make the modules timing comparison and print csv file
-    print_csv_file(repo1,repo2,infile1,infile2)
+    print_csv_and_txt_files(repo1,repo2,infile1,infile2)
     
 
 #######################################################

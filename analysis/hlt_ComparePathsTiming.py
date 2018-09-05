@@ -5,11 +5,12 @@
 # ecarrera@cern.ch
 # September 8, 2017
 # This script takes two of the csv output file from the TimingAndRates.py
-# results, and goes through them comparing paths, event with different
+# results, and goes through them comparing paths, even if they have different
 # versioning.
 ###########################################################################
 """
    usage: %prog <file1> <file2>
+   e.g: python hlt_ComparePathsTiming.py file1.csv file2.csv
 """   
 
 import os,sys
@@ -19,7 +20,6 @@ import fileinput
 import commands
 import operator
 from time import gmtime, localtime, strftime
-#from ROOT import *
 import io
 #just a debug flag
 DEBUG = False
@@ -57,13 +57,15 @@ def get_paths_info(infile):
     return theDict
 
 #######################################################
-def print_tuples(sDic,label,max):
+def print_tuples(sDic,label,max,thefile):
 #######################################################
     print label
+    thefile.write(label+"\n")
     n = 0
     for p in sDic:
         if (n < max):
             print p
+            thefile.write(str(p)+"\n")
         else:
             break
         n = n + 1
@@ -71,7 +73,7 @@ def print_tuples(sDic,label,max):
 
 
 #######################################################
-def print_csv_file(repo1,repo2,file1,file2):
+def print_csv_and_txt_files(repo1,repo2,file1,file2):
 #######################################################
 
     #compare based on first container, which
@@ -83,9 +85,13 @@ def print_csv_file(repo1,repo2,file1,file2):
     
     #create csv file
     csv_file_title = "PathTimingComparison_"+fname1+"_Vs_"+fname2+".csv"
+    txt_file_title = "PathTimingComparison_"+fname1+"_Vs_"+fname2+".txt"
     theTitle = unicode(csv_file_title)
-    #print theTitle
+    os.system("rm -f "+csv_file_title)
+    os.system("rm -f "+txt_file_title)
     f = io.open(theTitle,'w',encoding='utf8')
+    #no need to encode the txt file
+    ftxt = open(txt_file_title,'w')
 
     #to keep track of most offending paths and largest differences
     #with respect to the new menu
@@ -122,7 +128,7 @@ def print_csv_file(repo1,repo2,file1,file2):
         mostRelChange[p1name] = prel
         #print the csv file
         if (countk==0):
-            theCsvLine = unicode(fname1+",Timing (ms),"+fname2+",Timing (ms),"+fname1+"-"+fname2+" (ms),"+fname1+"/"+fname2+" (ms),("+fname1+"-"+fname2+")/"+fname2+"\n")
+            theCsvLine = unicode(fname1+",Timing (ms),"+fname2+",Timing (ms),["+fname1+"-"+fname2+"] (ms),["+fname1+"/"+fname2+"] (ms),[("+fname1+"-"+fname2+")/"+fname2+"]\n")
         else:        
             theCsvLine =  unicode(p1name+","+str(p1timing)+","+p2name+","+str(p2timing)+","+str(pdiff)+","+str(pratio)+","+str(prel)+"\n")
         f.write(theCsvLine)
@@ -136,15 +142,15 @@ def print_csv_file(repo1,repo2,file1,file2):
 
     #print first elements in the ordered tuples
     maxitems = 10
-    off_label = "Most Offending Paths - "+fname1+" Menu : ('Path', Timing (ms))"
-    print_tuples(sorted_mostOffending,off_label,maxitems)
+    off_label = "Most time-consuming paths ["+fname1+" Menu]\n('Path', timing (ms))"
+    print_tuples(sorted_mostOffending,off_label,maxitems,ftxt)
 #    print sorted_mostOffending
-    inc_label = "\nMost Absolute Increasing Paths - "+fname1+" Menu with respect to "+fname2+" Menu: ('Path', Increased Timing (ms))"
-    print_tuples(sorted_mostIncreasing,inc_label,maxitems)
-    dec_label = "\nMost Absolute Decreasing Paths - "+fname1+" Menu with respect to "+fname2+" Menu: ('Path', Decreased Timing (ms))"
-    print_tuples(sorted_mostDecreasing,dec_label,maxitems)
-    rel_label = "\nMost Absolute Relative Change in Timing - "+fname1+" Menu with respect to "+fname2+" Menu: ('Path', Absolute Relative Change)"
-    print_tuples(sorted_mostRelChange,rel_label,maxitems)
+    inc_label = "\nPaths with the most timing increment ["+fname1+" Menu - "+fname2+" Menu]\n('Path', increment in timing (ms))"
+    print_tuples(sorted_mostIncreasing,inc_label,maxitems,ftxt)
+    dec_label = "\nPaths with the most timing decrement ["+fname1+" Menu - "+fname2+" Menu]\n('Path', decrement in timing (ms))"
+    print_tuples(sorted_mostDecreasing,dec_label,maxitems,ftxt)
+    rel_label = "\nPaths with the most relative change in timing [ABS("+fname1+" Menu - "+fname2+" Menu)/"+fname2+" Menu]\n('Path', absolute relative change)"
+    print_tuples(sorted_mostRelChange,rel_label,maxitems,ftxt)
     
        
 ###############################################################
@@ -173,7 +179,7 @@ def main():
     repo2 = get_paths_info(infile2)
 
     #make the paths comparison and print csv file
-    print_csv_file(repo1,repo2,infile1,infile2)
+    print_csv_and_txt_files(repo1,repo2,infile1,infile2)
     
 
 #######################################################
